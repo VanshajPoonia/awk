@@ -215,6 +215,16 @@ fn argv_leaves_out_options_and_the_program_text() {
 }
 
 #[test]
+fn argv_starts_after_options_with_attached_values() {
+    for option in ["-F:", "--field-separator=:", "-bF:"] {
+        ucmd()
+            .args(&[option, "BEGIN { print ARGC, ARGV[1] }", "x"])
+            .succeeds()
+            .stdout_only("2 x\n");
+    }
+}
+
+#[test]
 fn argv_starts_at_the_first_operand_with_a_program_file() {
     let ts = uutests::util::TestScenario::new("awk");
     ts.fixtures
